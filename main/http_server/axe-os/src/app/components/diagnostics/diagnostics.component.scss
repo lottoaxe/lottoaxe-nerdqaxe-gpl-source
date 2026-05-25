@@ -1,0 +1,80 @@
+.la-beta-badge {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  background: var(--la-neon, #8DFF00);
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-left: 0.5rem;
+}
+
+.la-diagnostics-info {
+  color: var(--la-muted, #a1a1aa);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.la-diagnostics-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.la-diagnostics-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--la-surface-ground, #1a1a2e);
+  border-radius: 8px;
+  border: 1px solid var(--la-border, #2a2a3e);
+}
+
+.la-diag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--la-border, #2a2a3e);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.la-diag-label {
+  font-size: 0.75rem;
+  color: var(--la-muted, #a1a1aa);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.la-diag-value {
+  font-size: 0.85rem;
+  color: var(--la-text, #e4e4e7);
+  font-weight: 500;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.la-diagnostics-raw {
+  margin-top: 1rem;
+}
+
+.la-json-pre {
+  background: var(--la-surface-ground, #0f0f1a);
+  border: 1px solid var(--la-border, #2a2a3e);
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 0.7rem;
+  color: var(--la-neon, #8DFF00);
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

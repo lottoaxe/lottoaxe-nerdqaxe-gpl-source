@@ -1,0 +1,32 @@
+LottoAxe OS — NerdQaxe Edition
+Copyright (c) 2025-2026 LottoAxe
+
+This firmware is based on ESP-Miner-NerdQAxePlus:
+  https://github.com/shufps/ESP-Miner-NerdQAxePlus
+  Copyright (c) shufps and contributors
+  Licensed under GPL-3.0
+
+Additional upstream components:
+
+  ESP-IDF — Espressif IoT Development Framework
+  Copyright (c) Espressif Systems
+  Licensed under Apache-2.0
+
+  LVGL — Light and Versatile Graphics Library
+  Copyright (c) LVGL contributors
+  Licensed under MIT
+
+  Angular — Web Application Framework
+  Copyright (c) Google LLC
+  Licensed under MIT
+
+  PrimeNG — Angular UI Component Library
+  Copyright (c) PrimeTek
+  Licensed under MIT
+
+  libsecp256k1 — Optimized C library for ECDSA
+  Copyright (c) Pieter Wuille and contributors
+  Licensed under MIT
+
+This product includes software developed by the open-source community.
+See individual component directories for specific license terms.

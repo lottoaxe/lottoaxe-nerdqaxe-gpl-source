@@ -1,0 +1,147 @@
+<div class="layout-topbar">
+    <!-- Left: LottoAxe branding -->
+    <div class="la-topbar-brand">
+        <a routerLink="" class="la-topbar-brand-link">
+            <span class="la-topbar-brand-name">LOTTOAXE</span>
+            <span class="la-topbar-brand-os">OS</span>
+            <span class="la-topbar-beta-badge">BETA</span>
+            <span class="la-topbar-pulse-dot"></span>
+        </a>
+        <ng-container *ngIf="info$ | async as info">
+            <span class="la-topbar-hostname"
+                tooltipPosition="bottom"
+                pTooltip="Hostname"
+            >{{info.hostname}}</span>
+            <span class="la-topbar-edition">NerdQaxe Edition</span>
+        </ng-container>
+    </div>
+
+    <!-- Center: Live stats ticker (polls every 5s) -->
+    <div class="la-topbar-stats" *ngIf="info$ | async as info">
+        <div class="la-topbar-stat la-topbar-stat--hashrate">
+            <span class="la-topbar-stat-value">{{info.hashRate | hashSuffix}}</span>
+            <span class="la-topbar-stat-label">HASH</span>
+        </div>
+        <div class="la-topbar-stat la-topbar-stat--temp">
+            <span class="la-topbar-stat-value">{{info.temp}}&deg;C</span>
+            <span class="la-topbar-stat-label">TEMP</span>
+        </div>
+        <div class="la-topbar-stat la-topbar-stat--power">
+            <span class="la-topbar-stat-value">{{info.power | number:'1.1-1'}}W</span>
+            <span class="la-topbar-stat-label">POWER</span>
+        </div>
+        <div class="la-topbar-stat la-topbar-stat--diff">
+            <span class="la-topbar-stat-value">{{info.bestDiff | diffSuffix}}</span>
+            <span class="la-topbar-stat-label">BEST</span>
+        </div>
+        <div class="la-topbar-stat la-topbar-stat--shares">
+            <span class="la-topbar-stat-value">{{info.sharesAccepted}}</span>
+            <span class="la-topbar-stat-label">SHARES</span>
+        </div>
+    </div>
+
+    <!-- Tip pill button -->
+    <a class="la-tip-pill" href="https://lottoaxe.com/#tip" target="_blank" rel="noopener">
+        <i class="pi pi-heart-fill"></i>
+        <span>TIP THE DEVS</span>
+    </a>
+
+    <!-- Right: Action icons -->
+    <ng-container *ngIf="info$ | async as info">
+        <ul *ngIf="!isAPMode" class="la-topbar-actions">
+            <li *ngIf="dashboardEdit.editMode$ | async" class="hidden md:block">
+                <a class="block py-2 text-white cursor-pointer"
+                    tooltipPosition="bottom"
+                    pTooltip="Widgets"
+                    (click)="widgetPanel.toggle($event)"
+                >
+                    <i class="pi pi-list-check text-xl block"></i>
+                </a>
+            </li>
+            <li *ngIf="dashboardEdit.editMode$ | async" class="hidden md:block">
+                <a class="block py-2 text-white cursor-pointer"
+                    tooltipPosition="bottom"
+                    [pTooltip]="layoutService.isWideView() ? 'Standard Width' : 'Wide View'"
+                    (click)="layoutService.toggleWideView()"
+                >
+                    <i class="pi text-xl block"
+                        [ngClass]="layoutService.isWideView() ? 'pi-window-minimize' : 'pi-window-maximize'"></i>
+                </a>
+            </li>
+            <li *ngIf="dashboardEdit.editMode$ | async" class="hidden md:block">
+                <a class="block py-2 text-white cursor-pointer"
+                    tooltipPosition="bottom"
+                    pTooltip="Reset Layout"
+                    (click)="dashboardEdit.requestReset()"
+                >
+                    <i class="pi pi-replay text-xl block"></i>
+                </a>
+            </li>
+            <li class="hidden md:block">
+                <a class="block py-2 text-white cursor-pointer"
+                    tooltipPosition="bottom"
+                    [pTooltip]="(dashboardEdit.editMode$ | async) ? 'Save Layout' : 'Edit Layout'"
+                    (click)="dashboardEdit.toggleEditMode()"
+                >
+                    <i class="pi text-xl block"
+                        [ngClass]="(dashboardEdit.editMode$ | async) ? 'pi-save' : 'pi-th-large'"></i>
+                </a>
+            </li>
+            <li>
+                <a class="block py-2 text-white cursor-pointer"
+                    tooltipPosition="bottom"
+                    pTooltip="Sensitive data {{sensitiveDataHidden ? 'hidden' : 'visible'}}"
+                    (click)="toggleSensitiveData()"
+                >
+                    <i class="pi pi-{{sensitiveDataHidden ? 'eye-slash' : 'eye'}} block" style="font-size: 1.4rem;"></i>
+                </a>
+            </li>
+            <li>
+                <a routerLink="network"
+                    class="block py-2"
+                    tooltipPosition="bottom"
+                    pTooltip="Wi-Fi RSSI: {{info.wifiRSSI}} dBm"
+                >
+                    <wifi-icon [rssi]="info.wifiRSSI" />
+                </a>
+            </li>
+            <li>
+                <a class="block py-2 text-white cursor-pointer"
+                    tooltipPosition="bottom"
+                    [pTooltip]="isMiningPaused ? 'Resume Mining' : 'Pause Mining'"
+                    (click)="toggleMiningPaused()"
+                >
+                    <i class="pi text-xl block" [ngClass]="isMiningPaused ? 'pi-play-circle' : 'pi-pause-circle'"></i>
+                </a>
+            </li>
+            <li>
+                <a class="block py-2 text-white cursor-pointer"
+                    tooltipPosition="bottom"
+                    pTooltip="Restart"
+                    (click)="restart()"
+                >
+                    <i class="pi pi-refresh text-xl block"></i>
+                </a>
+            </li>
+        </ul>
+
+        <p-overlayPanel #widgetPanel>
+            <div class="flex flex-column gap-2">
+                <div *ngFor="let widget of dashboardEdit.widgetDefs" class="flex align-items-center gap-2">
+                    <p-checkbox
+                        [binary]="true"
+                        [ngModel]="dashboardEdit.isWidgetVisible(widget.id)"
+                        (onChange)="dashboardEdit.toggleWidgetRequested$.next(widget.id)"
+                        [inputId]="'widget-' + widget.id">
+                    </p-checkbox>
+                    <label [for]="'widget-' + widget.id" class="text-sm cursor-pointer white-space-nowrap">{{ widget.label }}</label>
+                </div>
+            </div>
+        </p-overlayPanel>
+    </ng-container>
+
+    <button *ngIf="!isAPMode" #menubutton class="p-link layout-topbar-button"
+        (click)="layoutService.onMenuToggle()">
+        <i class="pi pi-bars"></i>
+    </button>
+</div>

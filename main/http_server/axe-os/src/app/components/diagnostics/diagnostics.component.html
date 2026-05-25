@@ -1,0 +1,86 @@
+<div class="la-card">
+    <div class="la-card-header">
+        <h3 class="la-card-title">
+            <i class="pi pi-file-export"></i>
+            Beta Diagnostics
+        </h3>
+        <span class="la-beta-badge">BETA TOOL</span>
+    </div>
+
+    <div class="la-card-body">
+        <p class="la-diagnostics-info">
+            Export a full snapshot of your miner's state for troubleshooting.
+            Share this file with the LottoAxe devs when reporting issues.
+        </p>
+
+        <div class="la-diagnostics-actions">
+            <button pButton type="button"
+                label="Export Diagnostics"
+                icon="pi pi-download"
+                class="p-button-success"
+                (click)="exportDiagnostics()">
+            </button>
+
+            <button pButton type="button"
+                label="Copy to Clipboard"
+                icon="pi pi-copy"
+                class="p-button-outlined"
+                (click)="copyToClipboard()">
+            </button>
+
+            <button pButton type="button"
+                [label]="showRawJson ? 'Hide Raw Data' : 'Preview Raw Data'"
+                icon="pi pi-code"
+                class="p-button-outlined p-button-secondary"
+                (click)="toggleRawJson()">
+            </button>
+        </div>
+
+        <div *ngIf="diagnosticsData && !showRawJson" class="la-diagnostics-summary">
+            <div class="la-diag-row">
+                <span class="la-diag-label">Edition</span>
+                <span class="la-diag-value">{{diagnosticsData.edition}}</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">LottoAxe Version</span>
+                <span class="la-diag-value">{{diagnosticsData.lottoaxeVersion}}</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">Board</span>
+                <span class="la-diag-value">{{diagnosticsData.board?.model}}</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">ASIC</span>
+                <span class="la-diag-value">{{diagnosticsData.board?.asicModel}} x{{diagnosticsData.board?.asicCount}}</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">Firmware</span>
+                <span class="la-diag-value">{{diagnosticsData.firmware?.version}}</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">Hashrate</span>
+                <span class="la-diag-value">{{diagnosticsData.mining?.hashRate_10m | number:'1.1-1'}} GH/s (10m avg)</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">Shares</span>
+                <span class="la-diag-value">{{diagnosticsData.mining?.sharesAccepted}} accepted / {{diagnosticsData.mining?.sharesRejected}} rejected</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">Temp</span>
+                <span class="la-diag-value">{{diagnosticsData.system?.chipTempMax}}&deg;C</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">Power</span>
+                <span class="la-diag-value">{{diagnosticsData.system?.power | number:'1.1-1'}}W</span>
+            </div>
+            <div class="la-diag-row">
+                <span class="la-diag-label">Uptime</span>
+                <span class="la-diag-value">{{diagnosticsData.system?.uptimeSeconds | number:'1.0-0'}}s</span>
+            </div>
+        </div>
+
+        <div *ngIf="showRawJson" class="la-diagnostics-raw">
+            <pre class="la-json-pre">{{formattedJson}}</pre>
+        </div>
+    </div>
+</div>
